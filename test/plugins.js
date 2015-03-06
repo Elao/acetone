@@ -135,6 +135,9 @@ describe('Plugins', function() {
                 silent: true
             });
 
+        // Fix timeout
+        this.timeout(5000);
+
         acetone
             .addLayout('npm')
             .addLayout('bower')
@@ -212,6 +215,9 @@ describe('Plugins', function() {
                 cwd:    cwd,
                 silent: true
             });
+
+        // Fix timeout
+        this.timeout(5000);
 
         acetone
             .addLayout('npm')
