@@ -1,4 +1,4 @@
-# Acetone
+# Acetone [![Build Status](https://travis-ci.org/Elao/acetone.svg?branch=master)](https://travis-ci.org/Elao/acetone)
 
 Handle your project's assets with style ! (and gulp)
 
