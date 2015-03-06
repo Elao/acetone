@@ -42,7 +42,7 @@ describe('Plugins', function() {
 
         it('should have cleaned dest path', function() {
             assert.deepEqual(
-                fs.readdirSync(dir),
+                fs.readdirSync(dir).sort(),
                 []
             );
         });
@@ -87,7 +87,7 @@ describe('Plugins', function() {
 
         it('should have handled assets', function() {
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath()), [
+                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath()).sort(), [
                     'a.ttf',
                     'bower.ttf',
                     'foo',
@@ -96,13 +96,13 @@ describe('Plugins', function() {
                 ]
             );
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath('foo')), [
+                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath('foo')).sort(), [
                     'a.ttf',
                     'z.ttf'
                 ]
             );
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath('tao')), [
+                fs.readdirSync(acetone.getPoolHandler('fonts').getDestPath('tao')).sort(), [
                     'tao.ttf'
                 ]
             );
@@ -165,7 +165,7 @@ describe('Plugins', function() {
 
         it('should have handled assets', function() {
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('images').getDestPath()), [
+                fs.readdirSync(acetone.getPoolHandler('images').getDestPath()).sort(), [
                     'a.gif',
                     'bower.gif',
                     'foo',
@@ -174,13 +174,13 @@ describe('Plugins', function() {
                 ]
             );
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('images').getDestPath('foo')), [
+                fs.readdirSync(acetone.getPoolHandler('images').getDestPath('foo')).sort(), [
                     'a.gif',
                     'z.gif',
                 ]
             );
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('images').getDestPath('zia')), [
+                fs.readdirSync(acetone.getPoolHandler('images').getDestPath('zia')).sort(), [
                     'zia.gif',
                 ]
             );
@@ -235,7 +235,7 @@ describe('Plugins', function() {
 
         it('should have handled assets', function() {
             assert.deepEqual(
-                fs.readdirSync(acetone.getPoolHandler('sass').getDestPath()), [
+                fs.readdirSync(acetone.getPoolHandler('sass').getDestPath()).sort(), [
                     'app.css',
                     'fooApp.css'
                 ]
@@ -275,7 +275,7 @@ describe('Plugins', function() {
 
             it('should have handled assets', function() {
                 assert.deepEqual(
-                    fs.readdirSync(acetone.getPoolHandler('sass').getDestPath()), [
+                    fs.readdirSync(acetone.getPoolHandler('sass').getDestPath()).sort(), [
                         'app.css',
                         'fooApp.css'
                     ]

@@ -24,7 +24,7 @@ describe('Layouts', function() {
 
         it('should find paths', function() {
             assert.deepEqual(
-                acetone.libraries.getPaths(), [
+                acetone.libraries.getPaths().sort(), [
                     'test/fixtures/bower_components'
                 ]
             );
@@ -44,7 +44,7 @@ describe('Layouts', function() {
 
         it('should find paths', function() {
             assert.deepEqual(
-                acetone.libraries.getPaths(), [
+                acetone.libraries.getPaths().sort(), [
                     'test/fixtures/node_modules'
                 ]
             );
@@ -64,7 +64,7 @@ describe('Layouts', function() {
 
         it('should find paths', function() {
             assert.deepEqual(
-                acetone.bundles.getPaths(), [
+                acetone.bundles.getPaths().sort(), [
                     'test/fixtures/assets'
                 ]
             );
@@ -85,7 +85,7 @@ describe('Layouts', function() {
 
             it('should find paths', function() {
                 assert.deepEqual(
-                    acetone.bundles.getPaths(), [
+                    acetone.bundles.getPaths().sort(), [
                         'test/fixtures/assets',
                         'test/fixtures/assets_alt'
                     ]
@@ -107,7 +107,7 @@ describe('Layouts', function() {
 
         it('should find paths', function() {
             assert.deepEqual(
-                acetone.bundles.getPaths(), [
+                acetone.bundles.getPaths().sort(), [
                     'test/fixtures/app/Resources/assets',
                     'test/fixtures/app/bar/Resources/assets',
                     'test/fixtures/app/foo/Resources/assets',
@@ -131,7 +131,7 @@ describe('Layouts', function() {
 
             it('should find paths', function() {
                 assert.deepEqual(
-                    acetone.bundles.getPaths(), [
+                    acetone.bundles.getPaths().sort(), [
                         'test/fixtures/app/Resources/assets_alt',
                         'test/fixtures/app/bar/Resources/assets_alt',
                         'test/fixtures/app/foo/Resources/assets_alt',
@@ -158,10 +158,10 @@ describe('Layouts', function() {
 
         it('should find paths', function() {
             assert.deepEqual(
-                acetone.libraries.getPaths(), [
-                    'test/fixtures/assets/components',
+                acetone.libraries.getPaths().sort(), [
                     'test/fixtures/app/Resources/assets/components',
                     'test/fixtures/app/bar/Resources/assets/components',
+                    'test/fixtures/assets/components',
                     'test/fixtures/src/FooBundle/Resources/assets/components'
                 ]
             );
@@ -183,10 +183,10 @@ describe('Layouts', function() {
 
             it('should find paths', function() {
                 assert.deepEqual(
-                    acetone.libraries.getPaths(), [
-                        'test/fixtures/assets/components_alt',
+                    acetone.libraries.getPaths().sort(), [
                         'test/fixtures/app/Resources/assets/components_alt',
                         'test/fixtures/app/bar/Resources/assets/components_alt',
+                        'test/fixtures/assets/components_alt',
                         'test/fixtures/src/FooBundle/Resources/assets/components_alt'
                     ]
                 );
