@@ -2,16 +2,16 @@
 
 
 var
-    PoolHandler = require('../lib/Pool/Handler/Handler'),
-    BundlePoolPatternSolver = require('../lib/Pool/BundlePoolPatternSolver'),
-    LibraryPoolPatternSolver = require('../lib/Pool/LibraryPoolPatternSolver');
+    PoolHandler = require('../lib/Pool/Handler/PoolHandler'),
+    BundlePoolPatternSolver = require('../lib/Pool/PatternSolver/BundlePoolPatternSolver'),
+    LibraryPoolPatternSolver = require('../lib/Pool/PatternSolver/LibraryPoolPatternSolver');
 
 
 module.exports = function(acetone, options)
 {
     var
         gulp = require('gulp'),
-        handler;
+        poolHandler;
 
     // Options
     options = require('defaults')(options || {}, {
@@ -26,8 +26,8 @@ module.exports = function(acetone, options)
         throw new Error('Either a dir, srcDir or destDir must be set on copy plugin');
     }
 
-    // Handler
-    handler = new PoolHandler(
+    // Pool handler
+    poolHandler = new PoolHandler(
         acetone.fileSystem,
         options.id,
         options.destDir,
@@ -35,10 +35,10 @@ module.exports = function(acetone, options)
     );
 
     acetone
-        .addPoolHandler(handler);
+        .addPoolHandler(poolHandler);
 
     // Pools Patterns Solvers
-    handler
+    poolHandler
         .addPoolPatternSolver(new BundlePoolPatternSolver(acetone.bundles))
         .addPoolPatternSolver(new LibraryPoolPatternSolver(acetone.libraries))
         .addPoolPattern({
@@ -53,7 +53,7 @@ module.exports = function(acetone, options)
             gulpSize    = require('gulp-size'),
             gulpIf      = require('gulp-if'),
             src         = pool.getSrc(),
-            dest        = handler.getDestPath(pool.getDest());
+            dest        = poolHandler.getDestPath(pool.getDest());
 
         return gulp
             .src(src)
@@ -78,8 +78,8 @@ module.exports = function(acetone, options)
                 mergeStream = require('merge-stream'),
                 pools, stream;
 
-            pools = handler.pools
-                .find(acetone.options.get('pools'));
+            pools = poolHandler.pools
+                .find(acetone.options.getPools());
 
             if (!pools.length) {
                 return null;

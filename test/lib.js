@@ -15,6 +15,39 @@ var
 
 describe('Lib', function() {
 
+    // Options
+    describe('Options', function() {
+        var
+            Options = require('../lib/AcetoneOptions'),
+            options = new Options({foo: 'bar'});
+
+        describe('#get()', function() {
+            it('should return value', function() {
+                assert.equal(options.get('foo'), 'bar');
+                assert.isUndefined(options.get('bar'));
+            });
+        });
+
+        describe('#is()', function() {
+            it('should return boolean', function() {
+                assert.isTrue(options.is('foo'));
+                assert.isFalse(options.is('bar'));
+            });
+        });
+
+        describe('#setDefault()', function() {
+            before(function() {
+                options
+                    .setDefault('foo', 'baz')
+                    .setDefault('bar', 'foo');
+            });
+            it('should return default value', function() {
+                assert.equal(options.get('foo'), 'bar');
+                assert.equal(options.get('bar'), 'foo');
+            });
+        });
+    });
+
     // Bundle
     describe('Bundle', function() {
         var

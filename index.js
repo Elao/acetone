@@ -1,29 +1,49 @@
 'use strict';
 
 
+var
+    _util                      = require('gulp-util'),
+    Acetone                    = require('./lib/Acetone'),
+    AcetoneOptions             = require('./lib/AcetoneOptions'),
+    BundlePatternSolver        = require('./lib/Bundle/PatternSolver/BundlePatternSolver'),
+    GlobBundlePatternSolver    = require('./lib/Bundle/PatternSolver/GlobBundlePatternSolver'),
+    LibraryPatternSolver       = require('./lib/Library/PatternSolver/LibraryPatternSolver'),
+    BundleLibraryPatternSolver = require('./lib/Library/PatternSolver/BundleLibraryPatternSolver');
+
+
 module.exports = function(options)
 {
     var
-        Acetone = require('./lib/Acetone'),
-        acetone = new Acetone(options);
+        acetone = new Acetone(
+            new AcetoneOptions(options)
+        );
+
+    // Default options
+    acetone
+        .options
+            .setDefault('path',    '')
+            .setDefault('destDir', 'public')
+            .setDefault('debug',   _util.env.dev || false)
+            .setDefault('silent',  _util.env.silent || false)
+            .setDefault('pools',   typeof(_util.env.pools) === 'string' ? _util.env.pools.split(',') : null);
 
     // Bundles patterns solvers
-    var
-        BundlePatternSolver = require('./lib/Bundle/BundlePatternSolver'),
-        GlobBundlePatternSolver = require('./lib/Bundle/GlobBundlePatternSolver');
-
     acetone
-        .addBundlePatternSolver(new BundlePatternSolver(acetone.fileSystem))
-        .addBundlePatternSolver(new GlobBundlePatternSolver(acetone.fileSystem));
+        .addBundlePatternSolver(
+            new BundlePatternSolver(acetone.fileSystem)
+        )
+        .addBundlePatternSolver(
+            new GlobBundlePatternSolver(acetone.fileSystem)
+        );
 
     // Libraries patterns solvers
-    var
-        LibraryPatternSolver = require('./lib/Library/LibraryPatternSolver'),
-        BundleLibraryPatternSolver = require('./lib/Library/BundleLibraryPatternSolver');
-
     acetone
-        .addLibraryPatternSolver(new LibraryPatternSolver(acetone.fileSystem))
-        .addLibraryPatternSolver(new BundleLibraryPatternSolver(acetone.bundles));
+        .addLibraryPatternSolver(
+            new LibraryPatternSolver(acetone.fileSystem)
+        )
+        .addLibraryPatternSolver(
+            new BundleLibraryPatternSolver(acetone.bundles)
+        );
 
     // Layouts
     acetone
@@ -33,7 +53,8 @@ module.exports = function(options)
         };
 
     // Plugins
-    acetone.plugins = {};
+    acetone
+        .plugins = {};
     acetone
         .addPlugin = function() {
             var

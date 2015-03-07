@@ -2,15 +2,15 @@
 
 
 var
-    PoolHandler = require('../lib/Pool/Handler/Handler'),
-    BundlePoolPatternSolver = require('../lib/Pool/BundlePoolPatternSolver');
+    PoolHandler = require('../lib/Pool/Handler/PoolHandler'),
+    BundlePoolPatternSolver = require('../lib/Pool/PatternSolver/BundlePoolPatternSolver');
 
 
 module.exports = function(acetone, options)
 {
     var
         gulp = require('gulp'),
-        handler;
+        poolHandler;
 
     // Options
     options = require('defaults')(options || {}, {
@@ -23,8 +23,8 @@ module.exports = function(acetone, options)
         noParse:     ['jquery']
     });
 
-    // Handler
-    handler = new PoolHandler(
+    // Pool handler
+    poolHandler = new PoolHandler(
         acetone.fileSystem,
         options.id,
         options.destDir,
@@ -32,10 +32,10 @@ module.exports = function(acetone, options)
     );
 
     acetone
-        .addPoolHandler(handler);
+        .addPoolHandler(poolHandler);
 
     // Pools Patterns Solvers
-    handler
+    poolHandler
         .addPoolPatternSolver(new BundlePoolPatternSolver(acetone.bundles))
         .addPoolPattern({
             srcDir: options.srcDir,
@@ -54,7 +54,7 @@ module.exports = function(acetone, options)
             gulpIf         = require('gulp-if'),
             path           = require('path'),
             src            = './' +  pool.getSrc(),
-            dest           = handler.getDestPath(pool.getDest()),
+            dest           = poolHandler.getDestPath(pool.getDest()),
             args           = {
                 paths:   acetone.libraries.getPaths(),
                 noParse: options.noParse
@@ -142,12 +142,12 @@ module.exports = function(acetone, options)
 
     function gulpTask(watch) {
         var
-            PoolFlattenizer = require('../lib/Pool/Flattenizer/Flattenizer'),
+            PoolFlattenizer = require('../lib/Pool/Flattenizer/PoolFlattenizer'),
             mergeStream = require('merge-stream'),
             poolFlattenizer, pools, stream;
 
-        pools = handler.pools
-            .find(acetone.options.get('pools'));
+        pools = poolHandler.pools
+            .find(acetone.options.getPools());
 
         if (!pools.length) {
             return null;

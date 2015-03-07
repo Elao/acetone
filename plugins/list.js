@@ -49,19 +49,19 @@ module.exports = function(acetone)
             if (gulpUtil.env.pools) {
                 gulpUtil.log('Added', gulpUtil.colors.cyan(acetone.poolHandlers.length), 'pool handlers');
 
-                // Pool Handlers
-                acetone.poolHandlers.forEach(function(handler)
+                // Pool handlers
+                acetone.poolHandlers.forEach(function(poolHandler)
                 {
                     var
                         pools;
 
-                    gulpUtil.log('-', handler.getId());
-                    if (handler.hasDescription()) {
-                        gulpUtil.log(' ', gulpUtil.colors.cyan(handler.getDescription()));
+                    gulpUtil.log('-', poolHandler.getId());
+                    if (poolHandler.hasDescription()) {
+                        gulpUtil.log(' ', gulpUtil.colors.cyan(poolHandler.getDescription()));
                     }
 
                     // Pools
-                    pools = handler.pools.find();
+                    pools = poolHandler.pools.find();
                     gulpUtil.log('     Found', gulpUtil.colors.cyan(pools.length), 'pools');
                     pools.forEach(function(pool) {
                         gulpUtil.log('     -', pool.getName());
@@ -69,7 +69,7 @@ module.exports = function(acetone)
                             pool.getSrc()
                         ));
                         gulpUtil.log('      ', gulpUtil.colors.cyan('dest:'), gulpUtil.colors.magenta(
-                            handler.getDestPath(pool.getDest())
+                            poolHandler.getDestPath(pool.getDest())
                         ));
                     });
                 });

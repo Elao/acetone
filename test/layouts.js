@@ -3,7 +3,7 @@
 
 var
     assert = require('chai').assert,
-    cwd = 'test/fixtures';
+    path = 'test/fixtures';
 
 /***********/
 /* Layouts */
@@ -15,7 +15,7 @@ describe('Layouts', function() {
     describe('bower', function() {
         var
             acetone = require('..')({
-                cwd: cwd,
+                path: path,
                 silent: true
             });
 
@@ -35,7 +35,7 @@ describe('Layouts', function() {
     describe('npm', function() {
         var
             acetone = require('..')({
-                cwd: cwd,
+                path: path,
                 silent: true
             });
 
@@ -55,7 +55,7 @@ describe('Layouts', function() {
     describe('assets', function() {
         var
             acetone = require('..')({
-                cwd: cwd,
+                path: path,
                 silent: true
             });
 
@@ -73,7 +73,7 @@ describe('Layouts', function() {
         describe('alternate path', function() {
             var
                 acetone = require('..')({
-                    cwd: cwd,
+                    path: path,
                     silent: true
                 });
 
@@ -98,7 +98,7 @@ describe('Layouts', function() {
     describe('symfony', function() {
         var
             acetone = require('..')({
-                cwd: cwd,
+                path: path,
                 silent: true
             });
 
@@ -120,7 +120,7 @@ describe('Layouts', function() {
         describe('alternate dir', function() {
             var
                 acetone = require('..')({
-                    cwd: cwd,
+                    path: path,
                     silent: true
                 });
 
@@ -147,7 +147,7 @@ describe('Layouts', function() {
     describe('components', function() {
         var
             acetone = require('..')({
-                cwd: cwd,
+                path: path,
                 silent: true
             });
 
@@ -170,7 +170,7 @@ describe('Layouts', function() {
         describe('alternate dir', function() {
             var
                 acetone = require('..')({
-                    cwd: cwd,
+                    path: path,
                     silent: true
                 });
 

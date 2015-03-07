@@ -16,11 +16,11 @@ Handle your project's assets with style ! (and gulp)
 
     // Acetone - Layouts
     acetone
-        .addLayout('bower')
-        .addLayout('npm')
-        .addLayout('components')
         .addLayout('assets')
-        .addLayout('symfony');
+        .addLayout('symfony')
+        .addLayout('components')
+        .addLayout('npm')
+        .addLayout('bower');
 
     // Acetone - Plugins
     acetone

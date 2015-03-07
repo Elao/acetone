@@ -4,7 +4,7 @@
 var
     assert = require('chai').assert,
     fs = require('fs'),
-    cwd = 'test/fixtures';
+    path = 'test/fixtures';
 
 /***********/
 /* Plugins */
@@ -15,22 +15,22 @@ describe('Plugins', function() {
     // Clean
     describe('clean', function() {
         var
-            dir = cwd + '/web/assets',
             acetone = require('..')({
-                cwd:    cwd,
+                path: path,
                 silent: true
-            });
+            }),
+            destPath = acetone.fileSystem.getDestPath();
 
         before(function() {
             // Create assets test dest structure
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir);
+            if (!fs.existsSync(destPath)) {
+                fs.mkdirSync(destPath);
             }
-            fs.writeFileSync(dir + '/_test', 'test');
-            if (!fs.existsSync(dir + '/test')) {
-                fs.mkdirSync(dir + '/test');
+            fs.writeFileSync(destPath + '/_test', 'test');
+            if (!fs.existsSync(destPath + '/test')) {
+                fs.mkdirSync(destPath + '/test');
             }
-            fs.writeFileSync(dir + '/test/_test', 'test');
+            fs.writeFileSync(destPath + '/test/_test', 'test');
         });
 
         acetone
@@ -42,7 +42,7 @@ describe('Plugins', function() {
 
         it('should have cleaned dest path', function() {
             assert.deepEqual(
-                fs.readdirSync(dir).sort(),
+                fs.readdirSync(destPath).sort(),
                 []
             );
         });
@@ -53,7 +53,7 @@ describe('Plugins', function() {
         var
             gulp    = require('gulp'),
             acetone = require('..')({
-                cwd:    cwd,
+                path: path,
                 silent: true
             });
 
@@ -111,7 +111,7 @@ describe('Plugins', function() {
         describe('no assets', function() {
             var
                 acetone = require('..')({
-                    cwd:    cwd,
+                    path: path,
                     silent: true
                 });
 
@@ -131,7 +131,7 @@ describe('Plugins', function() {
         var
             gulp    = require('gulp'),
             acetone = require('..')({
-                cwd:    cwd,
+                path: path,
                 silent: true
             });
 
@@ -192,7 +192,7 @@ describe('Plugins', function() {
         describe('no assets', function() {
             var
                 acetone = require('..')({
-                    cwd:    cwd,
+                    path: path,
                     silent: true
                 });
 
@@ -212,7 +212,7 @@ describe('Plugins', function() {
         var
             gulp    = require('gulp'),
             acetone = require('..')({
-                cwd:    cwd,
+                path: path,
                 silent: true
             });
 
@@ -259,9 +259,9 @@ describe('Plugins', function() {
         describe('debug', function() {
             var
                 acetone = require('..')({
-                    cwd:    cwd,
+                    path: path,
                     silent: true,
-                    debug:  true
+                    debug: true
                 });
 
             acetone
@@ -317,7 +317,7 @@ describe('Plugins', function() {
         describe('no assets', function() {
             var
                 acetone = require('..')({
-                    cwd:    cwd,
+                    path: path,
                     silent: true
                 });
 

@@ -10,7 +10,7 @@ module.exports = function(acetone)
                 gulpUtil = require('gulp-util'),
                 path = acetone.fileSystem.getDestPath();
 
-            if (!acetone.options.get('silent')) {
+            if (!acetone.options.isSilent()) {
                 gulpUtil.log('Delete', gulpUtil.colors.magenta(path));
             }
 
