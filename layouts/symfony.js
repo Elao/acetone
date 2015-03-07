@@ -8,7 +8,7 @@ module.exports = function(acetone, options)
         dir: 'assets'
     });
 
-    // Bundle Patterns
+    // Acetone - Bundle Patterns
     acetone
         .addBundlePattern(
             function(bundle) {
@@ -38,4 +38,9 @@ module.exports = function(acetone, options)
                 description: 'Symfony bundle'
             }
         );
+
+    // Acetone - Default options
+    acetone
+        .options
+            .setDefault('destDir', 'web/assets');
 };

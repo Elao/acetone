@@ -3,7 +3,7 @@
 
 module.exports = function(acetone)
 {
-    // Library Patterns
+    // Acetone - Library Patterns
     acetone
         .addLibraryPattern({
             path:        'node_modules',

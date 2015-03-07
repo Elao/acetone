@@ -8,7 +8,7 @@ module.exports = function(acetone, options)
         dir: 'components'
     });
 
-    // Library Patterns
+    // Acetone - Library Patterns
     acetone
         .addLibraryPattern({
             bundleDir: options.dir

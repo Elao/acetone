@@ -8,7 +8,7 @@ module.exports = function(acetone, options)
         path: 'assets'
     });
 
-    // Bundle Patterns
+    // Acetone - Bundle Patterns
     acetone
         .addBundlePattern('assets', {
             path:        options.path,

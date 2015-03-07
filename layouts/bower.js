@@ -20,7 +20,7 @@ module.exports = function(acetone)
         }
     } catch(exception) {}
 
-    // Library Patterns
+    // Acetone - Library Patterns
     acetone
         .addLibraryPattern({
             path:        path,
