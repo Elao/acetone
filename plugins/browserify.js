@@ -162,8 +162,8 @@ module.exports = function(acetone, options)
                 stream.add(
                     gulpPipeline(
                         flattenPool,
-                        acetone.options.is('debug'),
-                        acetone.options.is('silent'),
+                        acetone.options.isDebug(),
+                        acetone.options.isSilent(),
                         watch || false
                     )
                 );

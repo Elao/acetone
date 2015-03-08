@@ -114,8 +114,8 @@ module.exports = function(acetone, options)
                 stream.add(
                     gulpPipeline(
                         pool,
-                        acetone.options.is('debug'),
-                        acetone.options.is('silent')
+                        acetone.options.isDebug(),
+                        acetone.options.isSilent()
                     )
                 );
             });
@@ -164,8 +164,8 @@ module.exports = function(acetone, options)
                     map[event.path].forEach(function(pool) {
                         gulpPipeline(
                             pool,
-                            acetone.options.is('debug'),
-                            acetone.options.is('silent')
+                            acetone.options.isDebug(),
+                            acetone.options.isSilent()
                         );
                     });
                 }
