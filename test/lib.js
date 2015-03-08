@@ -19,31 +19,81 @@ describe('Lib', function() {
     describe('Options', function() {
         var
             Options = require('../lib/AcetoneOptions'),
-            options = new Options({foo: 'bar'});
+            options;
 
-        describe('#get()', function() {
-            it('should return value', function() {
-                assert.equal(options.get('foo'), 'bar');
-                assert.isUndefined(options.get('bar'));
-            });
-        });
-
-        describe('#is()', function() {
-            it('should return boolean', function() {
-                assert.isTrue(options.is('foo'));
-                assert.isFalse(options.is('bar'));
-            });
-        });
-
-        describe('#setDefault()', function() {
+        describe('default values', function() {
             before(function() {
-                options
-                    .setDefault('foo', 'baz')
-                    .setDefault('bar', 'foo');
+                options = new Options();
             });
-            it('should return default value', function() {
-                assert.equal(options.get('foo'), 'bar');
-                assert.equal(options.get('bar'), 'foo');
+            it('should return default values', function() {
+                assert.equal(options.getPath(), '');
+                assert.equal(options.getDestDir(), 'public');
+                assert.isFalse(options.isDebug());
+                assert.isFalse(options.isSilent());
+                assert.isNull(options.getPools());
+            });
+        });
+
+        describe('custom values', function() {
+            before(function() {
+                options = new Options({
+                    path:    'foo',
+                    destDir: 'bar',
+                    debug:   true,
+                    silent:  true,
+                    pools:   ['foo']
+                });
+            });
+            it('should return default values', function() {
+                assert.equal(options.getPath(), 'foo');
+                assert.equal(options.getDestDir(), 'bar');
+                assert.isTrue(options.isDebug());
+                assert.isTrue(options.isSilent());
+                assert.deepEqual(options.getPools(), ['foo']);
+            });
+        });
+
+        describe('custom default values', function() {
+            before(function() {
+                options = new Options();
+                options
+                    .setDefault('path',    'foo')
+                    .setDefault('destDir', 'bar')
+                    .setDefault('debug',   true)
+                    .setDefault('silent',  true)
+                    .setDefault('pools',   ['foo']);
+            });
+            it('should return default values', function() {
+                assert.equal(options.getPath(), 'foo');
+                assert.equal(options.getDestDir(), 'bar');
+                assert.isTrue(options.isDebug());
+                assert.isTrue(options.isSilent());
+                assert.deepEqual(options.getPools(), ['foo']);
+            });
+        });
+
+        describe('custom and default values', function() {
+            before(function() {
+                options = new Options({
+                    path:    'foo',
+                    destDir: 'bar',
+                    debug:   true,
+                    silent:  true,
+                    pools:   ['foo']
+                });
+                options
+                    .setDefault('path',    'bar')
+                    .setDefault('destDir', 'foo')
+                    .setDefault('debug',   false)
+                    .setDefault('silent',  false)
+                    .setDefault('pools',   ['bar']);
+            });
+            it('should return default values', function() {
+                assert.equal(options.getPath(), 'foo');
+                assert.equal(options.getDestDir(), 'bar');
+                assert.isTrue(options.isDebug());
+                assert.isTrue(options.isSilent());
+                assert.deepEqual(options.getPools(), ['foo']);
             });
         });
     });
