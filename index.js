@@ -23,9 +23,10 @@ module.exports = function(options)
 
     // Default options
     acetone
-        .setDefaultOption('debug',  _util.env.dev || false)
-        .setDefaultOption('silent', _util.env.silent || false)
-        .setDefaultOption('pools',  typeof(_util.env.pools) === 'string' ? _util.env.pools.split(',') : null);
+        .options
+            .setDefault('debug',  _util.env.dev || false)
+            .setDefault('silent', _util.env.silent || false)
+            .setDefault('pools',  typeof(_util.env.pools) === 'string' ? _util.env.pools.split(',') : null);
 
     // Bundles patterns solvers
     acetone
@@ -45,14 +46,14 @@ module.exports = function(options)
             new BundleLibraryPatternSolver(acetone.bundles)
         );
 
-    // Layouts
+    // Api - Layouts
     acetone
         .addLayout = function(type, options) {
             require('./layouts/' + type)(this, options);
             return this;
         };
 
-    // Plugins
+    // Api - Plugins
     acetone
         .plugins = {};
     acetone

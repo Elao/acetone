@@ -41,5 +41,6 @@ module.exports = function(acetone, options)
 
     // Acetone - Default options
     acetone
-        .setDefaultOption('destDir', 'web/assets');
+        .options
+            .setDefault('destDir', 'web/assets');
 };
