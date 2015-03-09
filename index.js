@@ -23,10 +23,9 @@ module.exports = function(options)
 
     // Default options
     acetone
-        .options
-            .setDefault('debug',  _util.env.dev || false)
-            .setDefault('silent', _util.env.silent || false)
-            .setDefault('pools',  typeof(_util.env.pools) === 'string' ? _util.env.pools.split(',') : null);
+        .setDefaultOption('debug',  _util.env.dev || false)
+        .setDefaultOption('silent', _util.env.silent || false)
+        .setDefaultOption('pools',  typeof(_util.env.pools) === 'string' ? _util.env.pools.split(',') : null);
 
     // Bundles patterns solvers
     acetone
