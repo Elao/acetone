@@ -27,6 +27,7 @@ module.exports = function(acetone, options)
     poolHandler = new PoolHandler(
         acetone.fileSystem,
         options.id,
+        'browserify',
         options.destDir,
         options.description
     );

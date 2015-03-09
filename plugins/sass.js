@@ -29,6 +29,7 @@ module.exports = function(acetone, options)
     poolHandler = new PoolHandler(
         acetone.fileSystem,
         options.id,
+        'sass',
         options.destDir,
         options.description
     );

@@ -30,6 +30,7 @@ module.exports = function(acetone, options)
     poolHandler = new PoolHandler(
         acetone.fileSystem,
         options.id,
+        'copy',
         options.destDir,
         options.description
     );

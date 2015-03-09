@@ -56,7 +56,7 @@ module.exports = function(acetone)
                     var
                         pools;
 
-                    gulpUtil.log('-', poolHandler.getId());
+                    gulpUtil.log('-', poolHandler.getId(), '(' + poolHandler.getType() + ')');
                     if (poolHandler.hasDescription()) {
                         gulpUtil.log(' ', chalk.cyan(poolHandler.getDescription()));
                     }
