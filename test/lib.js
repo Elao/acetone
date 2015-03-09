@@ -3,12 +3,7 @@
 
 var
     assert = require('chai').assert,
-    sinon  = require('sinon'),
-    fileSystemMock = {
-        getPath: function(path) {
-            return path;
-        }
-    };
+    sinon  = require('sinon');
 
 /*******/
 /* Lib */
@@ -266,9 +261,12 @@ describe('Lib', function() {
     // Bundle
     describe('Bundle', function() {
         var
+            AcetoneFileSystem = require('../lib/AcetoneFileSystem'),
+            fileSystem = new AcetoneFileSystem(),
+            fileSystemMock = sinon.mock(fileSystem),
             Bundle = require('../lib/Bundle/Bundle'),
-            bundle = new Bundle(fileSystemMock, 'foo', 'bar', 'foobar'),
-            bundleUndescribed = new Bundle(fileSystemMock, 'foo', 'bar');
+            bundle = new Bundle(fileSystem, 'foo', 'bar', 'foobar'),
+            bundleUndescribed = new Bundle(fileSystem, 'foo', 'bar');
 
         describe('#getId()', function() {
             it('should return id', function() {
@@ -276,8 +274,10 @@ describe('Lib', function() {
             });
         });
         describe('#getPath()', function() {
+            fileSystemMock.expects('getPath').withArgs('bar').once().returns('bar');
             it('should return path', function() {
                 assert.equal(bundle.getPath(), 'bar');
+                fileSystemMock.verify();
             });
         });
         describe('#getDescription()', function() {
@@ -300,13 +300,18 @@ describe('Lib', function() {
     // Library
     describe('Library', function() {
         var
+            AcetoneFileSystem = require('../lib/AcetoneFileSystem'),
+            fileSystem = new AcetoneFileSystem(),
+            fileSystemMock = sinon.mock(fileSystem),
             Library = require('../lib/Library/Library'),
-            library = new Library(fileSystemMock, 'foo', 'bar'),
-            libraryUndescribed = new Library(fileSystemMock, 'foo');
+            library = new Library(fileSystem, 'foo', 'bar'),
+            libraryUndescribed = new Library(fileSystem, 'foo');
 
         describe('#getPath()', function() {
+            fileSystemMock.expects('getPath').withArgs('foo').once().returns('foo');
             it('should return path', function() {
                 assert.equal(library.getPath(), 'foo');
+                fileSystemMock.verify();
             });
         });
         describe('#getDescription()', function() {
