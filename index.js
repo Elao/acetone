@@ -2,9 +2,12 @@
 
 
 var
+    _fs                        = require('fs'),
+    _glob                      = require('glob'),
     _util                      = require('gulp-util'),
     Acetone                    = require('./lib/Acetone'),
     AcetoneOptions             = require('./lib/AcetoneOptions'),
+    AcetoneFileSystem          = require('./lib/AcetoneFileSystem'),
     BundlePatternSolver        = require('./lib/Bundle/PatternSolver/BundlePatternSolver'),
     GlobBundlePatternSolver    = require('./lib/Bundle/PatternSolver/GlobBundlePatternSolver'),
     LibraryPatternSolver       = require('./lib/Library/PatternSolver/LibraryPatternSolver'),
@@ -14,9 +17,9 @@ var
 module.exports = function(options)
 {
     var
-        acetone = new Acetone(
-            new AcetoneOptions(options)
-        );
+        acetoneOptions    = new AcetoneOptions(options),
+        acetoneFileSystem = new AcetoneFileSystem(_fs, _glob, acetoneOptions),
+        acetone           = new Acetone(acetoneFileSystem, acetoneOptions);
 
     // Default options
     acetone
