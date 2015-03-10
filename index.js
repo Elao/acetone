@@ -89,5 +89,19 @@ module.exports = function(options)
             return this;
         };
 
+    // Api - Pool
+    acetone
+        .addPoolPattern = function(name, patterns) {
+            Object.keys(patterns).forEach(function(handler) {
+                var
+                    pattern = patterns[handler];
+                pattern.name = name;
+                this.getPoolHandler(handler)
+                    .addPoolPattern(pattern);
+            }.bind(this));
+
+            return this;
+        };
+
     return acetone;
 };
