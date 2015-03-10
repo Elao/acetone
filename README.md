@@ -1,8 +1,8 @@
 # Acetone [![Build Status](https://travis-ci.org/Elao/acetone.svg?branch=master)](https://travis-ci.org/Elao/acetone)
 
-> Wear gloves !
+> Wear gloves!
 
-Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by a fluent api, allowing to structure your assets in an elegant manner, and offering a bridge to gulp some tasks.
+Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by a fluent api, allowing to structure your assets in an elegant manner, and offering a bridge to gulp tasks.
 
 ## Concepts
 
