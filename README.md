@@ -1,12 +1,26 @@
 # Acetone [![Build Status](https://travis-ci.org/Elao/acetone.svg?branch=master)](https://travis-ci.org/Elao/acetone)
 
-Handle your project's assets with style ! (and gulp)
+> Wear gloves !
 
+Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by a fluent api, allowing to structure your assets in an elegant manner, and offering a bridge to gulp some tasks.
+
+## Concepts
+
+### Bundle
+
+### Library
+
+### Pool
+
+## Api
+
+## Layouts
+
+## Plugins
 
 ## Installation
 
     $ npm install
-
 
 ## Usage
 
