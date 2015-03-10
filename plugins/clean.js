@@ -8,11 +8,10 @@ module.exports = function(acetone)
         gulpTask: function(callback) {
             var
                 gulpUtil = require('gulp-util'),
-                chalk    = require('chalk'),
                 path = acetone.fileSystem.getDestPath();
 
             if (!acetone.options.isSilent()) {
-                gulpUtil.log('Delete', chalk.magenta(path));
+                gulpUtil.log('Delete', gulpUtil.colors.magenta(path));
             }
 
             acetone.fileSystem.rimrafPath(path, callback);
