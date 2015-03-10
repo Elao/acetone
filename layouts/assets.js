@@ -5,13 +5,13 @@ module.exports = function(acetone, options)
 {
     // Options
     options = require('defaults')(options || {}, {
-        path: 'assets'
+        dir: 'assets'
     });
 
     // Acetone - Bundle Patterns
     acetone
         .addBundlePattern('assets', {
-            path:        options.path,
+            dir:         options.dir,
             description: 'Common assets'
         });
 };
