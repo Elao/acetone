@@ -1,8 +1,13 @@
 'use strict';
 
 
-module.exports = function(acetone)
+module.exports = function(acetone, options)
 {
+    // Options
+    options = require('defaults')(options || {}, {
+        exclude: null
+    });
+
     return {
         // Gulp task
         gulpTask: function(callback) {
@@ -14,7 +19,23 @@ module.exports = function(acetone)
                 gulpUtil.log('Delete', gulpUtil.colors.magenta(path));
             }
 
-            acetone.fileSystem.rimrafPath(path, callback);
+            if (options.exclude) {
+                if (!(options.exclude instanceof Array)) {
+                    options.exclude = [options.exclude];
+                }
+
+                options.exclude.forEach(function(glob, index, exclude) {
+                    exclude[index] = acetone.fileSystem.getDestPath(glob);
+                }.bind(this));
+            }
+
+            acetone.fileSystem.rimrafPath(
+                path,
+                {
+                    exclude: options.exclude
+                },
+                callback
+            );
         }
     };
 };
