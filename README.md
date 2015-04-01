@@ -4,17 +4,43 @@
 
 Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by a fluent api, allowing to structure your assets in an elegant manner, and offering a bridge to gulp tasks.
 
+
+## Blocking :(
+
+* Gulp 4
+  https://github.com/gulpjs/gulp/tree/4.0
+* Sourcemap support in gulp-header
+  https://github.com/tracker1/gulp-header/issues/7
+* Can't use symbolic link in gulp-imagin dependencies
+  https://github.com/imagemin/gifsicle-bin/pull/48
+  https://github.com/imagemin/jpegtran-bin/pull/57
+  https://github.com/imagemin/optipng-bin
+* Can't use require() with watchify
+  https://github.com/substack/watchify/issues/74
+* isEmpty support in merge-stream
+  https://github.com/grncdr/merge-stream/pull/15
+
+## No more blocking :)
+
+* Can't import files with dot in sass-graph
+  https://github.com/xzyfer/sass-graph/pull/24
+
+## Todo
+
+* Fix tests
+* Refactor AcetoneIntrospector
+* Handle watchify --ignore-watch (to vendor libraries such as npm_modules or bower_components)
+* Same with sass
+
 ## Concepts
 
-### Bundle
+### Source
 
 ### Library
 
 ### Pool
 
 ## Api
-
-## Layouts
 
 ## Plugins
 
@@ -29,41 +55,52 @@ Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by
         acetone = require('acetone')();
 
     // Acetone - Layouts
-    acetone
-        .addLayout('assets')
-        .addLayout('symfony')
-        .addLayout('components')
-        .addLayout('npm')
-        .addLayout('bower');
+    acetone.plugin('layouts/assets');
+    acetone.plugin('layouts/symfony');
+    acetone.plugin('layouts/components');
+    acetone.plugin('layouts/npm');
+    acetone.plugin('layouts/bower');
 
-    // Acetone - Plugins
-    acetone
-        .addPlugin('list')
-        .addPlugin('clean')
-        .addPlugin('fonts', 'copy', {dir: 'fonts'})
-        .addPlugin('images')
-        .addPlugin('sass')
-        .addPlugin('browserify');
+    // Acetone - Tasks
+    acetone.plugin('info',  'tasks/info');
+    acetone.plugin('clean', 'tasks/clean');
+
+    // Acetone - Builders
+    acetone.plugin('fonts',     'builders/copy');
+    acetone.plugin('images',    'builders/images');
+    acetone.plugin('sass',      'builders/sass');
 
     // Acetone - Pools
-    acetone
-        .addPoolPattern('toto', {
-            'fonts': {src: 'toto/**'}
-        });
+    
+    acetone.pools('sass')
+        .addSourcePool({src: 'sass/**/[!_]*.scss', dest: 'css'});
+    
+    acetone.pools('templates')
+        .addSourcePool({src: 'index.html.mustache'});
+    
+    acetone.pools('fonts')
+        .addSourcePool({src:  'fonts/**/*.*', dest: 'fonts'})
+        .addLibraryPool({src: 'font-awesome/fonts/*.*', dest: 'fonts/font-awesome'});
+    
+    acetone.pools('images')
+        .addSourcePool({src:  'images/**/*.*', dest: 'images'});
 
     // Gulp - Tasks
-    gulp.task('list',   acetone.plugins.list.gulpTask);
-    gulp.task('clean',  acetone.plugins.clean.gulpTask);
+    gulp.task('info', acetone.tasks('info').all());
+    gulp.task('clean', acetone.tasks('clean').clean());
 
-    gulp.task('install', ['fonts', 'images', 'sass', 'js']);
-    gulp.task('fonts',  acetone.plugins.fonts.gulpTask);
-    gulp.task('images', acetone.plugins.images.gulpTask);
-    gulp.task('sass',   acetone.plugins.sass.gulpTask);
-    gulp.task('js',     acetone.plugins.browserify.gulpTask);
+    gulp.task('build', ['fonts', 'images', 'sass']);
+    gulp.task('fonts', acetone.tasks('fonts').build());
+    gulp.task('images', acetone.tasks('images').build());
+    gulp.task('sass', acetone.tasks('sass').build({
+        sourcemaps: acetone.options.is('dev'),
+        minify:     !acetone.options.is('dev')
+    }));
 
-    gulp.task('watch', ['watch:sass', 'watch:js']);
-    gulp.task('watch:sass', acetone.plugins.sass.gulpWatch);
-    gulp.task('watch:js',   acetone.plugins.browserify.gulpWatch);
+    gulp.task('watch', ['watch:sass']);
+    gulp.task('watch:sass', acetone.tasks('sass').watch({
+        sourcemaps: true
+    }));
 
     gulp.task('default', ['install', 'watch']);
 
@@ -71,8 +108,3 @@ Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by
 ## Test
 
     $ npm test
-
-
-## Todo
-
-    * Use gulp header plugin when support sourcemaps (see: [https://github.com/tracker1/gulp-header/issues/7])
