@@ -4,29 +4,27 @@ var
     // Public
     xtend          = require('xtend'),
     gulpChanged    = require('gulp-changed'),
-    gulpMustache   = require('gulp-mustache'),
-    gulpRename     = require('gulp-rename'),
     gulpMinifyHtml = require('gulp-minify-html'),
     // Acetone
-    BuilderPlugin = require('../../lib/Plugin/BuilderPlugin');
+    AcetonePoolsPlugin = require('../lib/Plugin/PoolsPlugin');
 
 /**
  * Plugin
  */
-function Plugin(acetone, alias, options)
+function Plugin(acetone, id, options)
 {
     // Constructor
-    BuilderPlugin.call(this, acetone, alias, options);
+    AcetonePoolsPlugin.call(this, acetone, id, options);
 }
 
-Plugin.prototype = Object.create(BuilderPlugin.prototype);
+Plugin.prototype = Object.create(AcetonePoolsPlugin.prototype);
 
 /**
  * Get description
  */
 Plugin.prototype.getDescription = function()
 {
-    return 'Build mustache templates';
+    return 'Copy assets';
 };
 
 /**
@@ -39,7 +37,6 @@ Plugin.prototype._pipeline = function(pool, options, silent)
 
     options = xtend({
         changed:    false,
-        mustache:   [],
         minifyHtml: false
     }, options);
 
@@ -49,23 +46,6 @@ Plugin.prototype._pipeline = function(pool, options, silent)
             gulpChanged(pool.getDest())
         );
     }
-
-    // Mustache
-    stream = stream.pipe(
-        gulpMustache(
-            options.mustache[0],
-            options.mustache[1],
-            options.mustache[2]
-        )
-    );
-
-    // Rename
-    stream = stream.pipe(
-        gulpRename(function (path) {
-            // Remove .mustache extension
-            path.extname = '';
-        })
-    );
 
     // Minify - Html
     if (options.minifyHtml) {
@@ -78,7 +58,7 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     return this._pipelineStreamReturn(stream, pool, silent);
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, id, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Plugin(acetone, id, options);
 };

@@ -54,55 +54,61 @@ Acetone is *not* a nth task based build tool ! It's a set of classes, exposed by
         gulp    = require('gulp'),
         acetone = require('acetone')();
 
-    // Acetone - Layouts
-    acetone.plugin('layouts/assets');
-    acetone.plugin('layouts/symfony');
-    acetone.plugin('layouts/components');
-    acetone.plugin('layouts/npm');
-    acetone.plugin('layouts/bower');
+    /* ****** */
+    /* Layout */
+    /* ****** */
 
-    // Acetone - Tasks
-    acetone.plugin('info',  'tasks/info');
-    acetone.plugin('clean', 'tasks/clean');
+    acetone
+        .layout('symfony')
+        .layout('components')
+        .layout('npm');
 
-    // Acetone - Builders
-    acetone.plugin('fonts',     'builders/copy');
-    acetone.plugin('images',    'builders/images');
-    acetone.plugin('sass',      'builders/sass');
+    /* ******* */
+    /* Plugins */
+    /* ******* */
 
-    // Acetone - Pools
-    
-    acetone.pools('sass')
-        .addSourcePool({src: 'sass/**/[!_]*.scss', dest: 'css'});
-    
-    acetone.pools('templates')
-        .addSourcePool({src: 'index.html.mustache'});
-    
-    acetone.pools('fonts')
-        .addSourcePool({src:  'fonts/**/*.*', dest: 'fonts'})
-        .addLibraryPool({src: 'font-awesome/fonts/*.*', dest: 'fonts/font-awesome'});
-    
-    acetone.pools('images')
-        .addSourcePool({src:  'images/**/*.*', dest: 'images'});
+    acetone.plugin('info');
+    acetone.plugin('clean');
+    acetone.plugin('sass')
+        .pools
+            .addSourcePool({src: 'sass/**/[!_]*.scss', dest: 'css'})
+            .addLibraryPool({src: 'aaa/**/[!_]*.scss', dest: 'css/popo'})
+            .addPool({src: 'lib/ccc/**/[!_]*.scss', dest: 'css/pupu'});
+    acetone.plugin('fonts', 'copy')
+        .pools
+            .addSourcePool({src: 'fonts/**/*.*', dest: 'fonts'});
+    acetone.plugin('images')
+        .pools
+            .addSourcePool({src: 'images/**/*.*', dest: 'images'});
 
-    // Gulp - Tasks
-    gulp.task('info', acetone.tasks('info').all());
+    /* **** */
+    /* Gulp */
+    /* **** */
+
+    gulp.task('default', ['build', 'watch']);
+
+    gulp.task('build', ['sass', 'fonts', 'images']);
+    gulp.task('watch', ['watch:sass']);
+
+    gulp.task('info',  acetone.tasks('info').all());
     gulp.task('clean', acetone.tasks('clean').clean());
 
-    gulp.task('build', ['fonts', 'images', 'sass']);
-    gulp.task('fonts', acetone.tasks('fonts').build());
-    gulp.task('images', acetone.tasks('images').build());
+    // Sass
     gulp.task('sass', acetone.tasks('sass').build({
-        sourcemaps: acetone.options.is('dev'),
-        minify:     !acetone.options.is('dev')
+        sourcemaps:   acetone.options.is('dev'),
+        minify:       !acetone.options.is('dev'),
+        autoprefixer: true
     }));
-
-    gulp.task('watch', ['watch:sass']);
     gulp.task('watch:sass', acetone.tasks('sass').watch({
-        sourcemaps: true
+        sourcemaps: true,
+        autoprefixer: true
     }));
 
-    gulp.task('default', ['install', 'watch']);
+    // Fonts
+    gulp.task('fonts', acetone.tasks('fonts').build());
+
+    // Images
+    gulp.task('images', acetone.tasks('images').build());
 
 
 ## Test

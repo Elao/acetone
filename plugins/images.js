@@ -6,18 +6,18 @@ var
     gulpChanged  = require('gulp-changed'),
     gulpImagemin = require('gulp-imagemin'),
     // Acetone
-    BuilderPlugin = require('../../lib/Plugin/BuilderPlugin');
+    AcetonePoolsPlugin = require('../lib/Plugin/PoolsPlugin');
 
 /**
  * Plugin
  */
-function Plugin(acetone, alias, options)
+function Plugin(acetone, id, options)
 {
     // Constructor
-    BuilderPlugin.call(this, acetone, alias, options);
+    AcetonePoolsPlugin.call(this, acetone, id, options);
 }
 
-Plugin.prototype = Object.create(BuilderPlugin.prototype);
+Plugin.prototype = Object.create(AcetonePoolsPlugin.prototype);
 
 /**
  * Get description
@@ -55,7 +55,7 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     return this._pipelineStreamReturn(stream, pool, silent);
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, id, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Plugin(acetone, id, options);
 };

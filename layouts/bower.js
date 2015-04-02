@@ -2,19 +2,19 @@
 
 var
     // Acetone
-    LayoutPlugin = require('../../lib/Plugin/LayoutPlugin');
+    AcetoneLayout = require('../lib/Layout/Layout');
 
 /**
- * Plugin
+ * Layout
  */
-function Plugin(acetone, alias, options)
+function Layout(acetone, options)
 {
     var
         dir = 'bower_components',
         bowerConfig;
 
     // Constructor
-    LayoutPlugin.call(this, acetone, alias, options);
+    AcetoneLayout.call(this, acetone, options);
 
     // Find bower components dir in .bowerrc
     try {
@@ -34,17 +34,17 @@ function Plugin(acetone, alias, options)
         });
 }
 
-Plugin.prototype = Object.create(LayoutPlugin.prototype);
+Layout.prototype = Object.create(AcetoneLayout.prototype);
 
 /**
  * Get description
  */
-Plugin.prototype.getDescription = function()
+Layout.prototype.getDescription = function()
 {
     return 'Define "bower_components" (or custom .bowerrc one) dir as a library';
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Layout(acetone, options);
 };

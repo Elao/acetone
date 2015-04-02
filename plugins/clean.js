@@ -5,15 +5,15 @@ var
     xtend = require('xtend'),
     chalk = require('chalk'),
     // Acetone
-    TaskPlugin = require('../../lib/Plugin/TaskPlugin');
+    AcetoneTasksPlugin = require('../lib/Plugin/TasksPlugin');
 
 /**
  * Plugin
  */
-function Plugin(acetone, alias, options)
+function Plugin(acetone, id, options)
 {
     // Constructor
-    TaskPlugin.call(this, acetone, alias, options);
+    AcetoneTasksPlugin.call(this, acetone, id, options);
 
     // Tasks
     this._tasks
@@ -23,7 +23,7 @@ function Plugin(acetone, alias, options)
         });
 }
 
-Plugin.prototype = Object.create(TaskPlugin.prototype);
+Plugin.prototype = Object.create(AcetoneTasksPlugin.prototype);
 
 /**
  * Get description
@@ -50,7 +50,7 @@ Plugin.prototype._taskClean = function(options)
         var
             path = acetone.fileSystem.getDestPath();
 
-        if (!acetone.isSilent()) {
+        if (!acetone.options.is('silent')) {
             console.log('Clean', chalk.magenta(path));
         }
 
@@ -74,7 +74,7 @@ Plugin.prototype._taskClean = function(options)
     };
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, id, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Plugin(acetone, id, options);
 };

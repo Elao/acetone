@@ -10,18 +10,18 @@ var
     gulpSourcemaps   = require('gulp-sourcemaps'),
     gulpMinifyCss    = require('gulp-minify-css'),
     // Acetone
-    BuilderPlugin = require('../../lib/Plugin/BuilderPlugin');
+    AcetonePoolsPlugin = require('../lib/Plugin/PoolsPlugin');
 
 /**
  * Plugin
  */
-function Plugin(acetone, alias, options)
+function Plugin(acetone, id, options)
 {
     // Constructor
-    BuilderPlugin.call(this, acetone, alias, options);
+    AcetonePoolsPlugin.call(this, acetone, id, options);
 }
 
-Plugin.prototype = Object.create(BuilderPlugin.prototype);
+Plugin.prototype = Object.create(AcetonePoolsPlugin.prototype);
 
 /**
  * Get description
@@ -92,7 +92,7 @@ Plugin.prototype._taskWatch = function(options)
 {
     var
         acetone  = this._acetone,
-        pools    = this._pools,
+        pools    = this.pools,
         pipeline = this._pipeline.bind(this);
 
     return function() {
@@ -132,7 +132,7 @@ Plugin.prototype._taskWatch = function(options)
     };
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, id, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Plugin(acetone, id, options);
 };

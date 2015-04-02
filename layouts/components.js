@@ -4,12 +4,12 @@ var
     // Public
     xtend = require('xtend'),
     // Acetone
-    LayoutPlugin = require('../../lib/Plugin/LayoutPlugin');
+    AcetoneLayout = require('../lib/Layout/Layout');
 
 /**
- * Plugin
+ * Layout
  */
-function Plugin(acetone, alias, options)
+function Layout(acetone, options)
 {
     // Options
     options = xtend({
@@ -19,7 +19,7 @@ function Plugin(acetone, alias, options)
     }, options);
 
     // Constructor
-    LayoutPlugin.call(this, acetone, alias, options);
+    AcetoneLayout.call(this, acetone, options);
 
     // Acetone library patterns
     acetone.libraries
@@ -32,17 +32,17 @@ function Plugin(acetone, alias, options)
         );
 }
 
-Plugin.prototype = Object.create(LayoutPlugin.prototype);
+Layout.prototype = Object.create(AcetoneLayout.prototype);
 
 /**
  * Get description
  */
-Plugin.prototype.getDescription = function()
+Layout.prototype.getDescription = function()
 {
     return 'Define "components" (or custom choosen one) source dirs as libraries';
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Layout(acetone, options);
 };

@@ -7,16 +7,16 @@ var
     // Public
     chalk = require('chalk'),
     // Acetone
-    TaskPlugin          = require('../../lib/Plugin/TaskPlugin'),
-    AcetoneIntrospector = require('../../lib/AcetoneIntrospector');
+    AcetoneTasksPlugin  = require('../lib/Plugin/TasksPlugin'),
+    AcetoneIntrospector = require('../lib/AcetoneIntrospector');
 
 /**
  * Plugin
  */
-function Plugin(acetone, alias, options)
+function Plugin(acetone, id, options)
 {
     // Constructor
-    TaskPlugin.call(this, acetone, alias, options);
+    AcetoneTasksPlugin.call(this, acetone, id, options);
 
     // Acetone tasks
     this._tasks
@@ -24,9 +24,13 @@ function Plugin(acetone, alias, options)
             scope:       this,
             description: 'List all'
         })
+        .addTask('availableLayouts', this._taskAvailableLayouts, {
+            scope:       this,
+            description: 'List available layouts'
+        })
         .addTask('availablePlugins', this._taskAvailablePlugins, {
             scope:       this,
-            description: 'List available Plugins'
+            description: 'List available plugins'
         })
         .addTask('options', this._taskOptions, {
             scope:       this,
@@ -50,7 +54,7 @@ function Plugin(acetone, alias, options)
         });
 }
 
-Plugin.prototype = Object.create(TaskPlugin.prototype);
+Plugin.prototype = Object.create(AcetoneTasksPlugin.prototype);
 
 /**
  * Get description
@@ -69,6 +73,7 @@ Plugin.prototype._taskAll = function()
         self = this;
 
     return function(callback) {
+        self._taskAvailableLayouts()(function() {});
         self._taskAvailablePlugins()(function() {});
         self._taskOptions()(function() {});
         self._taskTasks()(function() {});
@@ -80,7 +85,90 @@ Plugin.prototype._taskAll = function()
 };
 
 /**
- * Task available Plugins
+ * Task available layouts
+ */
+Plugin.prototype._taskAvailableLayouts = function()
+{
+    var
+        layoutsPath = this._acetone.options.get('layoutsPath');
+
+    return function(callback) {
+        console.log(chalk.bold('\nAvailable layouts:\n'));
+
+        function walk(dir, callback, baseDir) {
+            _fs.readdirSync(dir).forEach(function(file) {
+                var
+                    filePath = _path.join(dir, file);
+                if (_fs.statSync(filePath).isFile()) {
+                    callback(_path.relative(baseDir ? baseDir : dir, filePath));
+                } else {
+                    walk(filePath, callback, dir);
+                }
+            });
+        }
+
+        walk(layoutsPath, function(layoutFile) {
+            var
+                acetoneIntrospector, layoutModule, layout;
+
+            if (_path.extname(layoutFile) !== '.js' || _path.basename(layoutFile, '.js')[0] === '_') {
+                return;
+            }
+
+            acetoneIntrospector = new AcetoneIntrospector({
+                layoutsPath: layoutsPath
+            });
+
+            layoutModule = layoutFile.replace('.js', '');
+
+            acetoneIntrospector.layout(layoutModule);
+
+            layout = acetoneIntrospector.introspection.layouts.shift();
+
+            if (layout) {
+                layout = layout.layout;
+
+                console.log('-', chalk.cyan(layoutModule), chalk.gray(layout.getDescription()));
+
+                acetoneIntrospector.introspection.librariesPatternSolvers.forEach(function() {
+                    console.log('  *', 'Add a library pattern solver');
+                });
+
+                acetoneIntrospector.introspection.librariesPatterns.forEach(function(libraryPattern) {
+                    console.log('  *', 'Add a "' + libraryPattern.type + '" library pattern');
+                });
+
+                acetoneIntrospector.introspection.sourcesPatternSolvers.forEach(function() {
+                    console.log('  *', 'Add a source pattern solver');
+                });
+
+                acetoneIntrospector.introspection.sourcesPatterns.forEach(function(sourcePattern) {
+                    console.log('  *', 'Add a "' + sourcePattern.type + '" source pattern');
+                });
+
+                acetoneIntrospector.introspection.optionsDefaults.forEach(function(optionDefault) {
+                    console.log('  *', 'Set "' + optionDefault.option + '" default option');
+                });
+
+                acetoneIntrospector.introspection.tasksGroupTasks.forEach(function(tasksGroupTask) {
+                    console.log('  *', 'Add tasks');
+                    tasksGroupTask.tasks.forEach(function(task) {
+                        console.log('     ', task.getId(), chalk.gray(task.getDescription()));
+                    });
+                });
+
+                acetoneIntrospector.introspection.poolsGroupPools.forEach(function() {
+                    console.log('  *', 'Add pools');
+                });
+            }
+        });
+
+        callback();
+    };
+};
+
+/**
+ * Task available plugins
  */
 Plugin.prototype._taskAvailablePlugins = function()
 {
@@ -104,7 +192,7 @@ Plugin.prototype._taskAvailablePlugins = function()
 
         walk(pluginsPath, function(pluginFile) {
             var
-                acetoneIntrospector, plugin;
+                acetoneIntrospector, pluginModule, plugin;
 
             if (_path.extname(pluginFile) !== '.js' || _path.basename(pluginFile, '.js')[0] === '_') {
                 return;
@@ -114,10 +202,16 @@ Plugin.prototype._taskAvailablePlugins = function()
                 pluginsPath: pluginsPath
             });
 
-            plugin = acetoneIntrospector.plugin(pluginFile.replace('.js', ''));
+            pluginModule = pluginFile.replace('.js', '');
+
+            acetoneIntrospector.plugin(pluginModule);
+
+            plugin = acetoneIntrospector.introspection.plugins.shift();
 
             if (plugin) {
-                console.log('-', chalk.cyan(plugin.getAlias()), chalk.gray(plugin.getDescription()));
+                plugin = plugin.plugin;
+
+                console.log('-', chalk.cyan(pluginModule), chalk.gray(plugin.getDescription()));
 
                 acetoneIntrospector.introspection.librariesPatternSolvers.forEach(function() {
                     console.log('  *', 'Add a library pattern solver');
@@ -268,7 +362,7 @@ Plugin.prototype._taskPools = function()
     };
 };
 
-module.exports = function(acetone, alias, options)
+module.exports = function(acetone, id, options)
 {
-    return new Plugin(acetone, alias, options);
+    return new Plugin(acetone, id, options);
 };

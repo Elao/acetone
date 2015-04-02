@@ -20,6 +20,7 @@ module.exports = function(options)
 
     // Acetone options
     acetoneOptions = new AcetoneOptions(options, {
+        layoutsPath: _path.join(__dirname, 'layouts'),
         pluginsPath: _path.join(__dirname, 'plugins'),
         dev:         argv.dev || false,
         silent:      argv.silent || false,
