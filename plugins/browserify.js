@@ -188,6 +188,39 @@ Plugin.prototype._taskBuild = function(options)
     };
 };
 
+/**
+ * Task watch
+ */
+Plugin.prototype._taskWatch = function(options)
+{
+    var
+        acetone  = this._acetone,
+        pools    = this.pools,
+        pipeline = this._pipeline.bind(this);
+
+    return function() {
+        var
+            stream      = mergeStream(),
+            streamEmpty = true;
+
+        pools.forEach(function(pool) {
+            pool.forEach(function(flattenPool) {
+                streamEmpty = false;
+                stream.add(
+                    pipeline(
+                        flattenPool,
+                        true,
+                        options,
+                        acetone.options.is('silent')
+                    )
+                );
+            });
+        }, acetone.options.get('pools'));
+
+        return streamEmpty ? null : stream;
+    };
+};
+
 module.exports = function(acetone, id, options)
 {
     return new Plugin(acetone, id, options);
