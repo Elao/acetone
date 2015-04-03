@@ -64,7 +64,9 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     stream = stream.pipe(
         gulpRename(function (path) {
             // Remove .mustache extension
-            path.extname = '';
+            if (path.extname === '.mustache') {
+                path.extname = '';
+            }
         })
     );
 
