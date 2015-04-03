@@ -13,6 +13,7 @@ var
     buffer         = require('vinyl-buffer'),
     gulpSourcemaps = require('gulp-sourcemaps'),
     gulpUglify     = require('gulp-uglify'),
+    gulpRename     = require('gulp-rename'),
     // Acetone
     AcetonePoolsPlugin = require('../lib/Plugin/PoolsPlugin');
 
@@ -49,7 +50,8 @@ Plugin.prototype._pipeline = function(pool, watch, options, silent)
     options = xtend({
         sourcemaps: false,
         browserify: {},
-        minify:     false
+        minify:     false,
+        rename:     false
     }, options);
 
     // Bundler
@@ -110,6 +112,13 @@ Plugin.prototype._pipeline = function(pool, watch, options, silent)
             options.minify = (typeof(options.minify) === 'object') ? options.minify : {};
             stream = stream.pipe(
                 gulpUglify(options.minify)
+            );
+        }
+
+        // Rename
+        if (options.rename) {
+            stream = stream.pipe(
+                gulpRename(options.rename)
             );
         }
 
