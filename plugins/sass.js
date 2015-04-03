@@ -39,6 +39,7 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     var
         stream = this._pipelineStream(pool);
     
+    // Options
     options = xtend({
         sourcemaps:   false,
         sass:         {},
@@ -79,8 +80,6 @@ Plugin.prototype._pipeline = function(pool, options, silent)
             gulpMinifyCss(options.minify)
         );
     }
-
-
 
     return this._pipelineStreamReturn(stream, pool, silent);
 };

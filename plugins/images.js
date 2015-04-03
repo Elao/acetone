@@ -35,6 +35,7 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     var
         stream = this._pipelineStream(pool);
 
+    // Options
     options = xtend({
         changed: false,
         minify:  {}
