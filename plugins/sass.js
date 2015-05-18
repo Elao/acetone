@@ -59,10 +59,11 @@ Plugin.prototype._pipeline = function(pool, options, silent)
     // Sass
     stream = stream.pipe(
         gulpSass(xtend({
-            errLogToConsole: true,
-            outputStyle:     'nested',
-            includePaths:    this._acetone.libraries.getPaths()
-        }, options.sass))
+            outputStyle:  'nested',
+            includePaths: this._acetone.libraries.getPaths()
+        }, options.sass)
+            .on('error', gulpSass.logError)
+        )
     );
 
     // Autoprefixer
